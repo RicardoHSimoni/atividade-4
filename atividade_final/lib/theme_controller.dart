@@ -2,8 +2,18 @@ import 'package:flutter/material.dart';
 import 'themes/light_theme.dart';
 import 'themes/dark_theme.dart';
 
+//CONTROLADOR DE TEMAS
 class ThemeController {
-  final ValueNotifier<ThemeData> themeNotifier = ValueNotifier<ThemeData>(lightTheme);
+  late final ValueNotifier<ThemeData> themeNotifier;
+
+  ThemeController() {
+    // Define o tema com base no horário
+    final hour = DateTime.now().hour;
+    final isDayTime = hour >= 6 && hour < 18;
+    final initialTheme = isDayTime ? lightTheme : darkTheme;
+
+    themeNotifier = ValueNotifier<ThemeData>(initialTheme);
+  }
 
   void toggleTheme() {
     themeNotifier.value =

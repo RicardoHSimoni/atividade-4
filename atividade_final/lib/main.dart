@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'theme_controller.dart';
 import 'package:expandable_cardview/expandable_cardview.dart';
-import 'login_screen.dart';
+import 'login/login_screen.dart';
 
 void main() {
   runApp(MyGimApp());
@@ -222,11 +222,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ],
       ),
+      backgroundColor: themeController.currentTheme.brightness == Brightness.dark
+          ? const Color.fromARGB(255, 23, 24, 31) : Colors.white,
     );
   }
 }
 
-// TELA INICIAL PÓS-ONBOARDING
+// TELA INICIAL APÓS LOGIN
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -236,7 +238,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Início       Bem-vindo ao seu app de treino!'),
+        title: Text('Bem-vindo ao seu app de treino!'),
         actions: [
           IconButton(
             icon: Icon(isDark ? Icons.wb_sunny : Icons.nights_stay),
@@ -245,6 +247,35 @@ class HomeScreen extends StatelessWidget {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Menu'),
+            ),
+            ListTile(
+              title: const Text('Configurações'),
+              onTap: () {
+                // Ação ao clicar em Configurações
+              },
+            ),
+            ListTile(
+              title: const Text('Sair'),
+              onTap: () {
+                // Ação ao clicar em Sair
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => LoginScreen()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Align(
         alignment: Alignment.topLeft,
@@ -270,6 +301,21 @@ class HomeScreen extends StatelessWidget {
             },
             textButtonActionFirst: 'Detalhes',
             textButtonActionSecond: 'Fechar',
+            onPressedButton2: () {
+              showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('VAMBORA PORRA AQUI NÓIS CONTRÓI FIBRA'),
+                content: Text('VAMBORA CUMPADI'),
+                actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('BIRL!!!'),
+                ),
+                ],
+              ),
+              );
+            },
           )
         )
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login_widgets.dart';
-import 'main.dart';
+import '../main.dart';
 
+// TELA DE LOGIN
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 

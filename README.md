@@ -12,6 +12,27 @@ Um aplicativo Flutter que demonstra a implementação de:
 
 ## 🚀 Instalação
 
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu_usuario/dynamic_splash_onboarding.git
+cd dynamic_splash_onboarding
+```
+
+2. Instale as dependências:
+```bash
+flutter pub get
+```
+
+3. Configure a splash screen nativa (modo dia/noite):
+```bash
+flutter pub run flutter_native_splash:create
+```
+
+4. Execute o app:
+ ```bash
+flutter run
+```
+
 ## 🎨 Splash Screen Inteligente
 
 - Tema Dinâmico: Fundo automático dia/noite baseado no horário local

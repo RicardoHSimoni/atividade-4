@@ -1,122 +1,279 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'theme_controller.dart';
+import 'package:expandable_cardview/expandable_cardview.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyGimApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+final ThemeController themeController = ThemeController();
 
-  // This widget is the root of your application.
+// APP PRINCIPAL
+class MyGimApp extends StatelessWidget {
+  const MyGimApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return ValueListenableBuilder<ThemeData>(
+      valueListenable: themeController.themeNotifier,
+      builder: (_, theme, __) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'MyGimApp',
+          theme: theme,
+          home: SplashScreenFlutter(), // ou SplashScreenFlutter, dependendo da navegação
+        );
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+// SPLASH SCREEN COM FUNDO RESPONSIVO
+class SplashScreenFlutter extends StatefulWidget {
+  const SplashScreenFlutter({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SplashScreenFlutter> createState() => _SplashScreenFlutterState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _SplashScreenFlutterState extends State<SplashScreenFlutter> {
+  bool _showLogo = false;
+  bool _isDayTime = true;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _configureSplash();
+  }
+
+  Future<void> _configureSplash() async {
+    _checkTimeOfDay();
+
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (mounted) setState(() => _showLogo = true);
+
+    await Future.delayed(const Duration(seconds: 5));
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+      );
+    }
+  }
+
+  void _checkTimeOfDay() {
+    final hour = DateTime.now().hour;
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _isDayTime = hour >= 6 && hour < 18; // Das 6h às 18h é considerado dia
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      body: AnimatedContainer(
+        duration: const Duration(seconds: 2),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: _isDayTime
+                ? [Colors.lightBlue.shade200, Colors.white]
+                : [Colors.indigo.shade900, Colors.black87],
+          ),
+        ),
+        child: Center(
+          child: AnimatedOpacity(
+            opacity: _showLogo ? 1.0 : 0.0,
+            duration: const Duration(seconds: 2),
+            child: Image.asset(
+              'assets/logo.png',
+              width: 160,
             ),
-          ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+// TELA DE ONBOARDING COM BOTÃO PULAR E SWIPE
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
+  @override
+  _OnboardingScreenState createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+
+  final List<Map<String, String>> onboardingData = [
+    {"image": "assets/image1.jpg", "text": "Seu treino, sua jornada"},
+    {"image": "assets/image2.jpg", "text": "Acompanhe seu progresso"},
+    {"image": "assets/image3.png", "text": "Alcance suas metas"},
+  ];
+
+  void _skip() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => HomeScreen()),
+    );
+  }
+
+  void _nextPage() {
+    if (_currentPage < onboardingData.length - 1) {
+      _controller.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _prevPage() {
+    if (_currentPage > 0) {
+      _controller.previousPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: PageView.builder(
+                  controller: _controller,
+                  itemCount: onboardingData.length,
+                  onPageChanged: (index) {
+                    setState(() => _currentPage = index);
+                  },
+                  itemBuilder: (context, index) => Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(onboardingData[index]['image']!, height: 300),
+                      SizedBox(height: 20),
+                      Text(
+                        onboardingData[index]['text']!,
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: _currentPage > 0 ? _prevPage : null,
+                    ),
+                    Row(
+                      children: List.generate(
+                        onboardingData.length,
+                        (index) => Container(
+                          margin: EdgeInsets.symmetric(horizontal: 4),
+                          width: _currentPage == index ? 12 : 8,
+                          height: _currentPage == index ? 12 : 8,
+                          decoration: BoxDecoration(
+                            color: _currentPage == index
+                                ? Colors.blue
+                                : Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ),
+                    _currentPage == onboardingData.length - 1
+                        ? ElevatedButton(
+                            onPressed: _skip,
+                            child: Text("Começar"),
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.arrow_forward),
+                            onPressed: _nextPage,
+                          ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 40,
+            right: 20,
+            child: TextButton(
+              onPressed: _skip,
+              child: Text(
+                "Pular",
+                style: TextStyle(color: Colors.blue, fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// TELA INICIAL PÓS-ONBOARDING
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+   Widget build(BuildContext context) {
+    bool isDark = themeController.currentTheme.brightness == Brightness.dark;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Início       Bem-vindo ao seu app de treino!'),
+        actions: [
+          IconButton(
+            icon: Icon(isDark ? Icons.wb_sunny : Icons.nights_stay),
+            onPressed: () {
+              themeController.toggleTheme();
+            },
+          ),
+        ],
+      ),
+      body: Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox(
+          width: 450,
+          height: 350,
+          child: ExpandableCard(
+            title: 'Treino Superiores',
+            description: 'Treino de força para membros superiores',
+            button2Value: 'Comece a treinar',
+            sectionRowCount: 1,
+            sectionRowTitles: const ['Exercícios'],
+            totalText: 3,
+            backgroundColor: isDark ? Colors.grey[800] : Colors.white,
+            elevation: 4.0,
+            button2Elevation: 5.0,
+            button2Color: Colors.blue,
+            button1TextColor: Colors.black,
+            button2BorderRadius: 5.0,
+            cardBorderRadius: 10,
+            sectionRowData: const {
+              'Exercícios': ['Rosca direta 4x15','Supino com halteres 4x15','Voador 4x15'],
+            },
+            textButtonActionFirst: 'Detalhes',
+            textButtonActionSecond: 'Fechar',
+          )
+        )
+
+      ),
+    );
+  }
+}
+

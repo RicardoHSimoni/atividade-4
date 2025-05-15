@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'theme_controller.dart';
 import 'package:expandable_cardview/expandable_cardview.dart';
+import 'login_screen.dart';
 
 void main() {
   runApp(MyGimApp());
@@ -119,7 +120,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _skip() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => HomeScreen()),
+      MaterialPageRoute(builder: (_) => LoginScreen()),
     );
   }
 

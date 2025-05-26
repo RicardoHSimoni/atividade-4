@@ -50,7 +50,7 @@ packages:
     source: hosted
     version: "1.0.8"
   expandable_cardview:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: expandable_cardview
       sha256: "4f0dc71bafa103ef5e531212c0cef8f95125aa972d0ba7e15d1651fae1ea9526"
@@ -161,7 +161,7 @@ packages:
     source: hosted
     version: "1.16.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "75cca69d1490965be98c73ceaea117e8a04dd21217b37b292c9ddbec0d955bc5"

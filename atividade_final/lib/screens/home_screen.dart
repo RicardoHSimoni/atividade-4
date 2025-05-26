@@ -5,16 +5,35 @@ import '../models/user_model.dart';
 import 'login_screen.dart';
 import 'package:expandable_cardview/expandable_cardview.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final UserModel user;
+  final bool showLoginSuccess;
 
-  const HomeScreen({Key? key, required this.user}) : super(key: key);
+  const HomeScreen({Key? key, required this.user, this.showLoginSuccess = false}) : super(key: key);
 
-  void _logout(BuildContext context) async {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.showLoginSuccess) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Usuário logado com sucesso')),
+        );
+      });
+    }
+  }
+
+  Future<void> _logout() async {
     // Limpa o e-mail salvo nas preferências
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('email_salvo');
     // Redireciona para a tela de login
+    if (!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -30,7 +49,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => _logout(context),
+            onPressed: _logout,
           ),
            IconButton(
              icon: Icon(isDark ? Icons.wb_sunny : Icons.nights_stay),
@@ -58,7 +77,7 @@ class HomeScreen extends StatelessWidget {
             ),
             ListTile(
               title: const Text('Sair'),
-              onTap: () => _logout(context),
+              onTap: _logout,
             ),
           ],
         ),
@@ -71,7 +90,7 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Bem vindo ${user.email}',
+                'Bem vindo ${widget.user.email}',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

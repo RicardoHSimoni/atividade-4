@@ -14,6 +14,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void _recuperarSenha() async {
     final email = _emailController.text;
     final user = await UserDao.getUserByEmail(email);
+    if (!mounted) return;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('E-mail não encontrado')),

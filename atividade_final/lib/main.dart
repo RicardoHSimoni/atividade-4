@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'theme_controller.dart';
-
 import 'screens/login_screen.dart';
-
-
 
 void main() {
   runApp(MyGimApp());

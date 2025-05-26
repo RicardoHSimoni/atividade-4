@@ -3,7 +3,6 @@ import 'package:atividade_final/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:atividade_final/screens/home_screen.dart';
 import '../database/user_dao.dart';
-import '../models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool _lembrarUsuario = false;
@@ -28,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final user = await UserDao.getUserByEmail(emailSalvo);
       if (user != null) {
         // Login automático
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen(user: user)),
@@ -49,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final user = await UserDao.getUserByEmail(email);
 
       if (user == null || user.password != senha) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Credenciais inválidas')),
         );
@@ -61,21 +62,27 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       // Se usuário e senha estiverem corretos
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(user: user),
+          builder: (context) => HomeScreen(user: user, showLoginSuccess: true),
         ),
       );
     }
   }
 
-  void _goToRegister() {
-    // Navegar para a tela de registro
-    Navigator.push(
+  void _goToRegister() async {
+    // Aguarda o resultado da tela de registro
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const RegisterScreen()),
     );
+    if (result == true && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Usuário registrado com sucesso')),
+      );
+    }
   }
 
   void _goToForgotPassword() {

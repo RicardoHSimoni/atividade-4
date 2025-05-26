@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -34,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _passwordController.clear();
 
       // Voltar para a tela de login ou outra ação
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
   }
 

@@ -1,6 +1,6 @@
 #  Aplicativo de Login com Splash, Onboarding e Temas no Flutter
 
-## 🌟 Funcionalidades Principais
+## Funcionalidades Principais
 Um aplicativo Flutter que demonstra a implementação de:
 - Splash Screen nativa e animada
 - Onboarding informativo
@@ -14,7 +14,7 @@ Um aplicativo Flutter que demonstra a implementação de:
 - Mensagens de Registro
 - Integração com Banco de Dados
 
-## 🚀 Instalação
+## Instalação
 
 1. Clone o repositório:
 ```bash
@@ -37,13 +37,13 @@ flutter pub run flutter_native_splash:create
 flutter run
 ```
 
-## 🎨 Splash Screen Inteligente
+## Splash Screen Inteligente
 
 - Tema Dinâmico: Fundo automático dia/noite baseado no horário local
 - Transição Suave: Animação personalizada usando Lottie
 - Carregamento Otimizado: Integração nativa com flutter_native_splash
 
-## 🚀 Fluxo Principal 
+## Fluxo Principal 
 
 - Splash Nativo (2s)
 - Exibição imediata com fundo contextual
@@ -60,25 +60,23 @@ flutter run
 - Design responsivo
 - Três opções de acesso
 
-## ✨ Diferenciais
+## Diferenciais
 
 - Dynamic Background Widget: Fundo animado que reage ao contexto
 - TimeContextController: Gerenciamento de tema baseado em horário
 - CustomTextFormField: Campo de texto com validação integrada
 
-## 📦 Dependências
+## Dependências
 
 - `flutter_native_splash`: Splash screen nativa
 - `lottie`: Animações vetoriais
 - `shared_preferences`:	Persistência de dados
 - `provider`:	Gerenciamento de estado
 
-## 🖼️ Screenshots
-
-## 👥 Equipe
+## Equipe
 - Ana Cecilia De Morais
 - Rebeca De Andrade Garcia
 - Ricardo Henrique Simoni
 
-## 📄 Licença
+## Licença
 Este projeto está licenciado sob a Licença MIT 

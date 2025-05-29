@@ -8,7 +8,11 @@ Um aplicativo Flutter que demonstra a implementação de:
 - Suporte a tema claro e escuro
 - Utilização de widget customizado reutilizáve
 
-## 🎥 Demonstração
+## Atualizações
+
+- Mensagens de Login
+- Mensagens de Registro
+- Integração com Banco de Dados
 
 ## 🚀 Instalação
 

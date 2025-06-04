@@ -73,6 +73,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: _register,
                 child: const Text('Registrar'),
               ),
+                            // ...existing code...
+              SizedBox(height: 16),
+              // Frase de termos de uso e política de privacidade
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black87, fontSize: 14),
+                    children: [
+                      TextSpan(text: 'Ao criar uma conta, você declara que está de acordo com os '),
+                      TextSpan(
+                        text: 'Termos de Uso',
+                        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: ' & '),
+                      TextSpan(
+                        text: 'Política de Privacidade',
+                        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: '.'),
+                    ],
+                  ),
+                ),
+              ),
+              // ...existing code...
             ],
           ),
         ),

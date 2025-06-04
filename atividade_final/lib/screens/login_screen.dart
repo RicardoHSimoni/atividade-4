@@ -15,9 +15,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   @override
+
+  bool _obscurePassword = true; // Adicione isso no início do State
+
   void initState() {
     super.initState();
     _carregarEmailSalvo();
+
   }
 
   void _carregarEmailSalvo() async {
@@ -115,17 +119,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _senhaController,
-                decoration: const InputDecoration(labelText: 'Senha'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe sua senha';
-                  }
-                  return null;
-                },
+              
+            TextFormField(
+              controller: _senhaController,
+              decoration: InputDecoration(
+                labelText: 'Senha',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
               ),
+              obscureText: _obscurePassword,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Informe sua senha';
+                }
+                return null;
+              },
+              ),
+              
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _login,
@@ -139,13 +157,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: _goToForgotPassword,
                 child: const Text('Esqueci minha senha'),
               ),
+               
               CheckboxListTile(
                 title: const Text('Lembrar usuário'),
                 value: _lembrarUsuario,
                 onChanged: (value) {
-                setState(() {
-                  _lembrarUsuario = value ?? false;
-                });
+                  setState(() {
+                    _lembrarUsuario = value ?? false;
+                  });
                 },
               ),
             ],

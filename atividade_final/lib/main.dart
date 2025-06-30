@@ -155,18 +155,45 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPageChanged: (index) {
                     setState(() => _currentPage = index);
                   },
-                  itemBuilder: (context, index) => Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(onboardingData[index]['image']!, height: 300),
-                      SizedBox(height: 20),
-                      Text(
-                        onboardingData[index]['text']!,
-                        style: TextStyle(fontSize: 20),
-                        textAlign: TextAlign.center,
+                  itemBuilder: (context, index) {
+                    return AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, child) {
+                        double value = 1.0;
+                        double rotation = 0.0;
+                        if (_controller.position.haveDimensions) {
+                          value = ((_controller.page ?? _controller.initialPage) - index).toDouble();
+                          // Escala mais agressiva
+                          double scale = (1 - (value.abs() * 0.5)).clamp(0.5, 1.0);
+                          // Rotação mais perceptível
+                          rotation = value * 0.5; // 0.5 radianos ~28 graus
+                          return Opacity(
+                            opacity: scale,
+                            child: Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()
+                                ..scale(scale)
+                                ..rotateZ(rotation),
+                              child: child,
+                            ),
+                          );
+                        }
+                        return child!;
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(onboardingData[index]['image']!, height: 300),
+                          SizedBox(height: 20),
+                          Text(
+                            onboardingData[index]['text']!,
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
               Padding(

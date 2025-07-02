@@ -4,18 +4,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 import 'login_screen.dart';
 import 'package:expandable_cardview/expandable_cardview.dart';
+import '../utils/accessibility.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class HomeScreen extends StatefulWidget {
   final UserModel user;
   final bool showLoginSuccess;
 
-  const HomeScreen({Key? key, required this.user, this.showLoginSuccess = false}) : super(key: key);
+  const HomeScreen({super.key, required this.user, this.showLoginSuccess = false});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FlutterTts flutterTts = FlutterTts();
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +30,25 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       });
     }
+    if (modoLeituraAtivo) {
+      _lerConteudo();
+    }
+  }
+
+  Future<void> _lerConteudo() async {
+    // Monte aqui o texto com todo o conteúdo da tela
+    String texto = '''
+Bem-vindo, ${widget.user.email}.
+Esta é a tela inicial do aplicativo.
+
+Aqui estão suas opções:
+1. Ver perfil
+2. Configurações
+3. Sair
+
+Toque em uma das opções para continuar.
+''';
+    await flutterTts.speak(texto);
   }
 
   Future<void> _logout() async {
@@ -38,6 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
+  }
+
+  @override
+  void dispose() {
+    flutterTts.stop();
+    super.dispose();
   }
 
   @override

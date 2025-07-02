@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _obscurePassword = true; // Adicione isso no início do State
 
+  @override
   void initState() {
     super.initState();
     _carregarEmailSalvo();

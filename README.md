@@ -75,7 +75,7 @@ flutter run
 
 ## Equipe
 - Ana Cecilia De Morais
-- Rebeca De Andrade Garcia
+- Gabriel Zimmer Teixeira
 - Ricardo Henrique Simoni
 
 ## Licença

@@ -180,12 +180,12 @@ Toque em uma das opções para continuar.
               showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('VAMBORA PORRA AQUI NÓIS CONTRÓI FIBRA'),
-                content: Text('VAMBORA CUMPADI'),
+                title: Text('Hora de fortalecer os braços!'),
+                content: Text('Vamos treinar membros superiores!'),
                 actions: [
                 TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('BIRL!!!'),
+                child: Text('Bora!!!'),
                 ),
                 ],
               ),

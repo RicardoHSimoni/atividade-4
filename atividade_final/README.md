@@ -53,9 +53,10 @@ Onboarding
 Tela 1 Tela 2 Tela 3
 Login
 Login Light Login Dark
-👥 Equipe Ana Cecilia De Morais
-Rebeca De Andrade Garcia
 
+👥 Equipe 
+Ana Cecilia De Morais
+Gabriel Zimmer Teixeira
 Ricardo Henrique Simoni
 
 📄 Licença Este projeto está licenciado sob a Licença MIT
